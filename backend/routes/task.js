@@ -1,7 +1,8 @@
 import express from 'express'
-import { testTask } from '../controllers/task.js'
+import { getUsers, register} from '../controllers/task.js'
 const router = express.Router()
 
-router.get('/tasks', testTask)
+router.post('/tasks', register)
+
 
 export default router

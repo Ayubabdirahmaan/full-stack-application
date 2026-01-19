@@ -5,21 +5,14 @@ const PORT = process.env.PORT || 2000;
 import mongoose from "mongoose";
 dotenv.config();
 import UserRouter from "../backend/routes/task.js";
+import getUsers from './routes/users.js'
 import { notFound } from "./middleware/noFound.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 app.use(express.json());
 
-
-
-app.get("/test", (req, res, next) => {
-  res.json("hello walal welcome");
-  next(err)
-});
-
 app.use("/api/user", UserRouter);
+app.use("/api/users",getUsers );
 
-app.use("/api/user", UserRouter);
-app.use("/api/user", UserRouter);
 app.use(notFound)
 app.use(errorHandler)
 
