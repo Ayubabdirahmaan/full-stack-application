@@ -16,15 +16,9 @@ app.use("/api/users", getUsers);
 app.use(notFound);
 app.use(errorHandler);
 
-mongoose
-  .connect(
-    process.env.NODE_ENV == "development"
-      ? process.env.MONGO_URI_DEV
-      : process.env.MONGO_URI_PRO,
-  )
-  .then(() => console.log("✅ Connection Successfully"))
-  .catch((error) => console.log("❌ Connection Error", error));
-
+mongoose.connect(process.env.NODE_ENV == "development" ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PRO)
+    .then(() => console.log("✅ MongoDB connected locally"))
+    .catch((err) => console.log("❌ Connection err:", err))
 app.listen(PORT, () => {
   console.log(`server is runing:http://localhost:${PORT}`);
 });
