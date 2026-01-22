@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import "./App.css";
+import { TestUser } from "./TestUser";
 
 function App() {
   const { data, error, isLoading } = useQuery({
@@ -11,7 +12,11 @@ function App() {
   if (error) return <h1>error..</h1>;
 
   return (
-    <div>{data.user.length > 0 && data.user.map((users) => <h1>{users.name}</h1>)}</div>
+    <>
+    <TestUser />
+     <div>{data.user.map((users) => <h1>{users.name}</h1>)}</div>
+    </>
+   
   );
 }
 
