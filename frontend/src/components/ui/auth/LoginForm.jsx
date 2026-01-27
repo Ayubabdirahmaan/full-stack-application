@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -9,27 +9,28 @@ import {
 } from "@/components/ui/card";
 import { Input } from "../input";
 import { Button } from "../button";
-import { useFormStatus } from "react-dom";
+
 import { useNavigate } from "react-router";
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button type="submit" className={"w-full cursor-pointer"}>
-      {pending ? (
-        <span className="flex items-center gap-2">
-          <Loader /> Creating account...
-        </span>
-      ) : (
-        "Create Account"
-      )}
-    </Button>
-  );
-}
+import { Loader } from "lucide-react";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState("");
+
+  const [formValues, setFormValues] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState(null);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
   return (
     <Card className="w-full border-border">
       <CardHeader className="space-y-1 pb-4">
@@ -41,15 +42,36 @@ export const LoginForm = () => {
           <CardContent>
             <div className="space-y-2 pt-0">
               <div className="text-sm font-medium text-left">Eamil</div>
-              <Input name="email" placeholder="email@gmail.com" required />
+              <Input
+                name="email"
+                placeholder="email@gmail.com"
+                required
+                value={formValues.email}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="space-y-2 pt-0">
               <div className="text-sm font-medium text-left">password</div>
-              <Input name="password" placeholder="******" required />
+              <Input
+                name="password"
+                placeholder="******"
+                required
+                value={formValues.password}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="py-4">
-              <SubmitButton />
+              <Button type="submit" className={"w-full cursor-pointer"}>
+                {isLoading ? (
+                  <span className="flex items-center gap-2">
+                    {" "}
+                    <Loader /> login account..{" "}
+                  </span>
+                ) : (
+                  "Loggin Account"
+                )}
+              </Button>
             </div>
           </CardContent>
           <div>
