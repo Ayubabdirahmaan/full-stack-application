@@ -13,6 +13,7 @@ import { replace, useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader } from "lucide-react";
+import api from "@/lib/api/apiClient";
 
 export const RegisterForm = () => {
   const navigate = useNavigate();
@@ -26,16 +27,15 @@ export const RegisterForm = () => {
 
   const registerMutation = useMutation({
     mutationFn: async (userData) => {
-      const response = await axios.post(
-        "http://localhost:2000/api/user/",
+      const response = await api.post(
+        "/user/",
         userData,
       );
       console.log("response data", response);
       return response.data;
     },
     onSuccess: (data) => {
-      console.log("success data", data);
-      // navigate("/dashboard", replace);
+     navigate('/login')
     },
     onError: (error) => {
       if (
