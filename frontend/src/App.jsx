@@ -3,9 +3,9 @@ import { Navigate, Route, Routes } from "react-router";
 import { LoginPage } from "./Pages/auth/loginPage";
 import { RegisterPage } from "./Pages/auth/RegisterPage";
 import { DashboardPage } from "./Pages/Dasboard/DashboardPage";
-import { ProtectedRoute } from "./components/ui/auth/ProtectedRoute";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { Admin } from "./Pages/Dasboard/Admin";
-import { AdminProtectRoute } from "./components/ui/auth/AdminProtectRoute";
+import { AdminProtectRoute } from "./components/auth/AdminProtectRoute";
 
 function App() {
   return (

@@ -7,8 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "../input";
-import { Button } from "../button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { replace, useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
