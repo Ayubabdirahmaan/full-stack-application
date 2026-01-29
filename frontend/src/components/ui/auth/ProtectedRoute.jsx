@@ -35,7 +35,7 @@ export const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     if (isError && data ) {
       clearAuth();
-    }
+    } 
   }, [isError, error, data, clearAuth]);
   // success case
   useEffect(() => {
