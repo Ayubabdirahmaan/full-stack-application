@@ -1,9 +1,9 @@
 import React from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog'
 
-export const TaskForm = ({open = true, onOpenChange}) => {
+export const TaskForm = () => {
   return (
-   <Dialog open={open} onOpenChange={{onOpenChange}} >
+   <Dialog>
   <DialogContent className={'sm:max-w-[500px'}>
             <DialogHeader>
                 <DialogTitle className={'text-lg font-semibold'}>Create New Task</DialogTitle>
