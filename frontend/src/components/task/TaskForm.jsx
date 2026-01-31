@@ -3,11 +3,21 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "../ui/button";
 
 export const TaskForm = ({ open = true, onOpenChange }) => {
   const [formValues, setFormValue] = useState({
@@ -24,6 +34,21 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
       [name]: value,
     });
   };
+  const handleStatusChange = (value) => {
+      setFormValue({
+        ...formValues,
+        status: value
+      })
+  }
+
+  const TASK_STATUS = [
+    { value: "pending", label: "pending" },
+    { value: "in progress", label: "in progress" },
+    { value: "completed", label: "completed" },
+  ];
+    const handleCencel = () => {
+    onOpenChange?.(false)
+  }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={"sm:max-w-[500px"}>
@@ -35,7 +60,7 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
             Fill in the details below to create a new task
           </DialogDescription>
         </DialogHeader>
-        <form>
+        <form className="space-y-6">
           <div className="space-y-2">
             <Label>Title *</Label>
             <Input
@@ -48,6 +73,49 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
               required
             />
           </div>
+          <div className="space-y-2">
+            <Label>Describtion *</Label>
+            <Textarea
+              id="describtion"
+              name="describtion"
+              type="text"
+              value={formValues.title}
+              onChange={handleInputChange}
+              placeholder="Enter task title"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Select
+            value={formValues.status}
+            onValueChange={handleStatusChange}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Theme" />
+              </SelectTrigger>
+              <SelectContent>
+                {TASK_STATUS.map((status) => (
+                  <SelectItem key={status.value} value={status.value}>
+                    {status.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+              <Label>Due Date</Label>
+              <Input
+              id="dueDate"
+              name="dueDate"
+              type='date'
+              value={formValues.dueDate}
+              onChange={handleInputChange}
+               />
+          </div>
+          <DialogFooter className={'flex justify-end space-x-2'}>
+            <Button type="submit" variant="outline" onChange={handleCencel}>Cancel</Button>
+                <Button type="submit">Create Task</Button>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
