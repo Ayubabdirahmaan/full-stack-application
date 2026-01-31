@@ -4,17 +4,17 @@ import { TaskForm } from "@/components/task/TaskForm";
 import { useState } from "react";
 
 export const DashboardPage = () => {
-  const [showCreateFoarm, setShowCreateFoarm] = useState(false)
-  const [edtingTask, setEditingTask] = useState(null)
+  const [showCreateFoarm, setShowCreateFoarm] = useState(false);
+  const [edtingTask, setEditingTask] = useState(null);
 
   const handleFormClose = () => {
-    setShowCreateFoarm(false)
-    setEditingTask(null)
-  }
+    setShowCreateFoarm(false);
+    setEditingTask(null);
+  };
 
   const handleCreateTaskClick = () => {
-    setShowCreateFoarm(true)
-  }
+    setShowCreateFoarm(true);
+  };
   return (
     <div className="min-h-screen bg-background">
       {/* header  */}
@@ -23,15 +23,15 @@ export const DashboardPage = () => {
       <main>
         {/* welcome section  */}
         <DashboardWelcome
-        showCreateFoarm={showCreateFoarm}
-        onCreateTask={handleCreateTaskClick}
+          showCreateFoarm={showCreateFoarm}
+          onCreateTask={handleCreateTaskClick}
         />
         {/* tasks section */}
       </main>
       <TaskForm
-      open={showCreateFoarm || !!edtingTask}
-      onOpenChange={handleFormClose}
-       />
+        open={showCreateFoarm || !!edtingTask}
+        onOpenChange={handleFormClose}
+      />
       {/* task dialog form */}
     </div>
   );

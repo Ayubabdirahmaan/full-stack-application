@@ -26,7 +26,7 @@ export const DashboardWelcome = ({  onCreateTask, showCreateFoarm}) => {
           </div>
           {/* todo: create new task */}
           <Button
-          onClick={  onCreateTask}>Create New Task</Button>
+          onClick={onCreateTask}>Create New Task</Button>
         </div>
       </CardHeader>
 
