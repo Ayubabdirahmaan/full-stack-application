@@ -9,7 +9,7 @@ const taskSchema = new mongoose.Schema({
         default: 'pending'
     },
     dueDate: Date,
-    createBy : {
+    createdBy : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true

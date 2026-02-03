@@ -30,8 +30,8 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
     dueDate: "",
   });
 
-  const {token} = useAuthStore()
-  const [validationError, setValidationError] = useState(null)
+  const { token } = useAuthStore();
+  const [validationError, setValidationError] = useState(null);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -41,58 +41,56 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
     });
   };
   const handleStatusChange = (value) => {
-      setFormValue({
-        ...formValues,
-        status: value
-      })
-  }
+    setFormValue({
+      ...formValues,
+      status: value,
+    });
+  };
 
   const TASK_STATUS = [
     { value: "pending", label: "pending" },
     { value: "in progress", label: "in progress" },
     { value: "completed", label: "completed" },
   ];
-    const handleCencel = () => {
-    onOpenChange?.(false)
-  }
+  const handleCencel = () => {
+    onOpenChange?.(false);
+  };
 
-  // create task mutation 
+  // create task mutation
 
   const createTaskMutation = useMutation({
     mutationFn: async (taskData) => {
-        const response = await api.post('/todo/', taskData, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        return response.data
+      const response = await api.post("/tasks/", taskData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
     },
     onSuccess: (data) => {
-      console.log("Task Created successfuly:", data)
-
+      console.log("Task Created successfuly:", data);
     },
     onError: (error) => {
-          console.log('Error creating task:', error);
+      console.log("Error creating task:", error);
+    },
+  });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!formValues.title) {
+      setValidationError("Title is required");
+      return;
     }
-
-  })
-        const handleSubmit = (e) => {
-          e.preventDefault()
-
-          if(!formValues.title) {
-            setValidationError('Title is required')
-            return
-          }
-          const taskData = {
-            title :  formValues.title.trim(),
-            description: formValues.description.trim(),
-            status: formValues.status,
-            dueDate : formValues.dueDate ? new Date (formValues.dueDate).toISOString() : null
-          }
-          createTaskMutation.mutate(taskData)
-        }
-
-
+    const taskData = {
+      title: formValues.title.trim(),
+      description: formValues.description.trim(),
+      status: formValues.status,
+      dueDate: formValues.dueDate
+        ? new Date(formValues.dueDate).toISOString()
+        : null,
+    };
+    createTaskMutation.mutate(taskData);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -132,8 +130,8 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
           </div>
           <div className="space-y-2">
             <Select
-            value={formValues.status}
-            onValueChange={handleStatusChange}
+              value={formValues.status}
+              onValueChange={handleStatusChange}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Theme" />
@@ -148,18 +146,20 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
             </Select>
           </div>
           <div className="space-y-2">
-              <Label>Due Date</Label>
-              <Input
+            <Label>Due Date</Label>
+            <Input
               id="dueDate"
               name="dueDate"
-              type='date'
+              type="date"
               value={formValues.dueDate}
               onChange={handleInputChange}
-               />
+            />
           </div>
-          <DialogFooter className={'flex justify-end space-x-2'}>
-            <Button type="button" variant="outline" onChange={handleCencel}>Cancel</Button>
-                <Button type="submit">Create Task</Button>
+          <DialogFooter className={"flex justify-end space-x-2"}>
+            <Button type="button" variant="outline" onChange={handleCencel}>
+              Cancel
+            </Button>
+            <Button type="submit">Create Task</Button>
           </DialogFooter>
         </form>
       </DialogContent>

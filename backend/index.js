@@ -4,35 +4,31 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
 import UserRouter from "./routes/task.js";
-import getUsers from "./routes/users.js";
 import { notFound } from "./middleware/noFound.js";
 import { errorHandler } from "./middleware/errorHandler.js";
-import authProtect from './routes/auth.js'
-import authAdmin from './routes/admin.js'
-import testPage from './routes/taskTodo.js'
+import authProtect from "./routes/auth.js";
+import authAdmin from "./routes/admin.js";
+import TaskRouter from './routes/userTask.js'
 
 dotenv.config(); //
-
 const app = express();
 const PORT = process.env.PORT || 2000;
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-
 app.use(
   cors({
     origin: ["http://localhost:5173"],
   }),
 );
 
-app.use(express.json()); 
+app.use(express.json());
 
 app.use("/api/user", UserRouter);
-app.use("/api/users", getUsers);
 app.use("/api/auth", authProtect);
 app.use("/api/admin", authAdmin);
-app.use('/api/tasks', testPage)
+app.use("/api/tasks", TaskRouter)
 
 app.use(notFound);
 app.use(errorHandler);
