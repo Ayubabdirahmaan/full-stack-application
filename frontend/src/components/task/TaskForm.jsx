@@ -18,11 +18,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
+import { useMutation } from "@tanstack/react-query";
+import api from "@/lib/api/apiClient";
 
 export const TaskForm = ({ open = true, onOpenChange }) => {
   const [formValues, setFormValue] = useState({
     title: "",
-    describtion: "",
+    description: "",
     status: "pending",
     dueDate: "",
   });
@@ -49,6 +51,27 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
     const handleCencel = () => {
     onOpenChange?.(false)
   }
+
+  // create task mutation 
+
+  const createTaskMutation = useMutation({
+    mutationFn: async (taskData) => {
+        const response = await api.post()
+    },
+    onSuccess: (data) => {
+
+    },
+    onError: (error) => {
+
+    }
+
+  })
+
+
+
+
+
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={"sm:max-w-[500px"}>
@@ -74,12 +97,12 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
             />
           </div>
           <div className="space-y-2">
-            <Label>Describtion *</Label>
+            <Label>Description *</Label>
             <Textarea
-              id="describtion"
-              name="describtion"
+              id="description"
+              name="description"
               type="text"
-              value={formValues.title}
+              value={formValues.description}
               onChange={handleInputChange}
               placeholder="Enter task title"
               required
@@ -113,7 +136,7 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
                />
           </div>
           <DialogFooter className={'flex justify-end space-x-2'}>
-            <Button type="submit" variant="outline" onChange={handleCencel}>Cancel</Button>
+            <Button type="button" variant="outline" onChange={handleCencel}>Cancel</Button>
                 <Button type="submit">Create Task</Button>
           </DialogFooter>
         </form>

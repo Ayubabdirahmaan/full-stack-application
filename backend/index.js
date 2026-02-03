@@ -9,6 +9,7 @@ import { notFound } from "./middleware/noFound.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import authProtect from './routes/auth.js'
 import authAdmin from './routes/admin.js'
+import createdTask from './routes/todoTask.js'
 
 dotenv.config(); //
 
@@ -32,6 +33,7 @@ app.use("/api/user", UserRouter);
 app.use("/api/users", getUsers);
 app.use("/api/auth", authProtect);
 app.use("/api/admin", authAdmin);
+app.use("/api/todo", createdTask);
 
 app.use(notFound);
 app.use(errorHandler);
