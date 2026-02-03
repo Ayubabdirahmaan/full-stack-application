@@ -29,7 +29,6 @@ app.use(
 app.use(express.json());
 
 app.use("/api/user", UserRouter);
-app.use("/api/user", UserRouter);
 app.use("/api/users", getUsers);
 app.use("/api/auth", authProtect);
 app.use("/api/admin", authAdmin);

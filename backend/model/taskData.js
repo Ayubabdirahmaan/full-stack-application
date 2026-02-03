@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
-    title: {type: String, require: true},
-    discription: String,
+    title: {type: String, required: true},
+    description: String,
     status: {
         type: String,
         enum: ['pending', 'in progress', 'completed'],
@@ -12,7 +12,7 @@ const taskSchema = new mongoose.Schema({
     createBy : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true
+        required: true
     }
 
 },{timestamps: true}
