@@ -80,45 +80,28 @@ export const TaskList = ({
       </div>
       {/* tabs */}
       <Tabs defaultValue="all" className="w-full">
-        <TabsList className={'grid w-full grid-cols-4'}>
-          <TabsTrigger value="all" className={'flex items-center gap-2'}>
+        <TabsList className={"grid w-full grid-cols-4"}>
+          <TabsTrigger value="all" className={"flex items-center gap-2"}>
             All
-            <Badge variant="secondary">
-                {tasks.length}
-            </Badge>
-            </TabsTrigger>
-            <TabsTrigger value="pending" className={'flex items-center gap-2'}>
+            <Badge variant="secondary">{tasks.length}</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="pending" className={"flex items-center gap-2"}>
             Pending
-            <Badge variant="secondary">
-                {stats.pending}
-            </Badge>
-            </TabsTrigger>
-            <TabsTrigger value="inProgress" className={'flex items-center gap-2'}>
+            <Badge variant="secondary">{stats.pending}</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="inProgress" className={"flex items-center gap-2"}>
             In Progress
-            <Badge variant="secondary">
-                {stats.inProgress}
-            </Badge>
-            </TabsTrigger>
-            <TabsTrigger value="completed" className={'flex items-center gap-2'}>
-        Completed
-            <Badge variant="secondary">
-                {stats.completed}
-            </Badge>
-            </TabsTrigger>
-          
+            <Badge variant="secondary">{stats.inProgress}</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="completed" className={"flex items-center gap-2"}>
+            Completed
+            <Badge variant="secondary">{stats.completed}</Badge>
+          </TabsTrigger>
         </TabsList>
-        <TabsContent value="all">
-        All tasks
-        </TabsContent>
-          <TabsContent value="pending">
-          Pending Tasks
-        </TabsContent>
-         <TabsContent value="inProgress">
-         in progress Tasks
-        </TabsContent>
-         <TabsContent value="completed">
-          Completed Tasks
-        </TabsContent>
+        <TabsContent value="all">All tasks</TabsContent>
+        <TabsContent value="pending">Pending Tasks</TabsContent>
+        <TabsContent value="inProgress">in progress Tasks</TabsContent>
+        <TabsContent value="completed">Completed Tasks</TabsContent>
         <TabsContent value="password">Change your password here.</TabsContent>
       </Tabs>
     </div>
