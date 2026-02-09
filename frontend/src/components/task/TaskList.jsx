@@ -13,19 +13,29 @@ export const TaskList = ({
   onStatusChange,
 }) => {
   const getTaskStatus = () => {
-    const total = tasks.total;
-    const pending = tasks.filter((task) => task.status === "pending").length;
-    const inProgress = tasks.filter(
-      (task) => task.status === "in progress",
-    ).length;
-    const completed = tasks.filter(
-      (task) => task.status === "completed",
-    ).length;
-    return { total, pending, inProgress, completed };
+    const AllTasksByStatus = {
+      pending: tasks.filter((task) => task.status === "pending").length,
+      inProgress: tasks.filter((task) => task.status === "in progress").length,
+      completed: tasks.filter((task) => task.status === "completed").length,
+    };
+    const categorizedTasks = {
+      all: tasks,
+      pending : tasks.filter(task => task.status === "pending"),
+      inProgress : tasks.filter(task => task.status === "in progress"),
+      completed : tasks.filter(task => task.status === "completed")
+    }
+    const stats = {
+      total: tasks.length,
+      pending : AllTasksByStatus.pending,
+      inProgress: AllTasksByStatus.inProgress,
+      completed: AllTasksByStatus.completed
+    }
+    const total = tasks.length
+    return { total, stats, categorizedTasks };
   };
   const [seachTerm, setSearchTerm] = useState("");
 
-  const stats = getTaskStatus();
+  const {stats, total, categorizedTasks} = getTaskStatus();
 
   const TaskGrid = ({ tasks, emptyMessage }) => {
     if (tasks.length === 0) {
@@ -127,11 +137,24 @@ export const TaskList = ({
           </TabsTrigger>
         </TabsList>
         <TabsContent value="all">
-            <TaskGrid />
+          <TaskGrid tasks={categorizedTasks.all} />
         </TabsContent>
-        <TabsContent value="pending">Pending Tasks</TabsContent>
-        <TabsContent value="inProgress">in progress Tasks</TabsContent>
-        <TabsContent value="completed">Completed Tasks</TabsContent>
+        <TabsContent value="pending">
+          Pending Tasks
+            <TaskGrid tasks={categorizedTasks.pending}
+            emptyMessage={"No Pending Found"}
+             />
+          </TabsContent>
+        <TabsContent value="inProgress">in progress Tasks
+           <TaskGrid tasks={categorizedTasks.inProgress}
+            emptyMessage={"No inProgress Found"}
+             />
+        </TabsContent>
+        <TabsContent value="completed">Completed Tasks
+           <TaskGrid tasks={categorizedTasks.completed}
+            emptyMessage={"No Completed Found"}
+             />
+        </TabsContent>
         <TabsContent value="password">Change your password here.</TabsContent>
       </Tabs>
     </div>
