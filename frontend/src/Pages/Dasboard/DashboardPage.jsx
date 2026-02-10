@@ -56,7 +56,7 @@ export const DashboardPage = () => {
       {/* header  */}
       <DashboardHeader />
       {/* main contant */}
-      <main className="max-w-full px-4 py-8 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 py-8 space-y-6">
         {/* welcome section  */}
         <DashboardWelcome
           showCreateFoarm={showCreateFoarm}
