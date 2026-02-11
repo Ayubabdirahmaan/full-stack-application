@@ -3,11 +3,8 @@ import { protect } from "../middleware/authMiddleware.js";
 import { createTask } from "../controllers/todoTask.js";
 import { validate } from "../middleware/validationZod.js";
 import { taskValidationSchema } from "../Schema/taskSchema.js";
-import { updateTask } from "../controllers/task.js";
 const router = express.Router();
 
 router.post("/", protect, validate(taskValidationSchema), createTask);
-
-router.post("/".protect, validate(taskValidationSchema), updateTask);
 
 export default router;

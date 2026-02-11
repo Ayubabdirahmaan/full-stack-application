@@ -45,16 +45,4 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const updateTask = async (req, res, next) => {
-  try {
-    const task = await User.findOneAndUpdate(
-      { _id: req.params.id, createdBy: req.user._id },
-      req.body,
-      { new: true }
-    );
-    if (!task) return res.status(404).json({ message: 'Task not found' });
-    res.json(task);
-  } catch (error) {
-    next(error);
-  }
-};
+

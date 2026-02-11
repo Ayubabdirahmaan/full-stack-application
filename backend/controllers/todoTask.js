@@ -7,13 +7,41 @@ export const createTask = async (req, res, next) => {
     next(error);
   }
 };
-
 export const getMyTasks = async (req, res, next) => {
   try {
     const task = await Task.find({ createdBy: req.user._id }).sort({
       createdAt: -1,
     });
     res.json(task);
+  } catch (error) {
+    next(error);
+  }
+};
+export const updateTask = async (req, res, next) => {
+  try {
+    const task = await Task.findOneAndUpdate(
+      { _id: req.params.id, createdBy: req.user._id },
+      req.body,
+      { new: true },
+    );
+    if (!task) return res.status(404).json({ message: "Task not found" });
+    res.json(task);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteTask = async (req, res, next) => {
+  try {
+    const task = await Task.findByIdAndDelete({
+      _id: req.params.id,
+      createdBy: req.user._id,
+    });
+    if (!task) {
+      res.status(404).json({ message: "Task not found" });
+    }
+
+    res.json({ message: "Task deleted" });
   } catch (error) {
     next(error);
   }
