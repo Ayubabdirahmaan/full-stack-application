@@ -18,11 +18,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api/apiClient";
 import useAuthStore from "@/lib/store/authStore";
+import { extractErrorMessages } from "@/util/errorUtils";
+import { toast } from "sonner";
+import { Loader } from "lucide-react";
 
-export const TaskForm = ({ task, open = true, onOpenChange }) => {
+export const TaskForm = ({ task, open = true, onOpenChange ,  isLoading = false }) => {
   const [formValues, setFormValue] = useState({
     title: "",
     description: "",
@@ -31,24 +34,25 @@ export const TaskForm = ({ task, open = true, onOpenChange }) => {
   });
   const [validationError, setValidationError] = useState(null);
 
-    useEffect(()=> {
-      if(task) {
-       setFormValue({
+  useEffect(() => {
+    if (task) {
+      setFormValue({
         title: task.title || "",
         description: task.description || "",
-        status: task.status || 'pending',
-        dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ""
-       })
-      }else {
-        setFormValue({
-          title: "",
-          description: "",
-          status: "pending",
-          dueDate: ""
-        })
-      }
-    
-  },[task, open])
+        status: task.status || "pending",
+        dueDate: task.dueDate
+          ? new Date(task.dueDate).toISOString().split("T")[0]
+          : "",
+      });
+    } else {
+      setFormValue({
+        title: "",
+        description: "",
+        status: "pending",
+        dueDate: "",
+      });
+    }
+  }, [task, open]);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -70,10 +74,10 @@ export const TaskForm = ({ task, open = true, onOpenChange }) => {
     { value: "completed", label: "completed" },
   ];
   const handleCencel = () => {
-    onOpenChange?.(false);
+    onOpenChange(false);
   };
 
-
+  const queryCleint = useQueryClient()
 
   // create task mutation
 
@@ -83,10 +87,41 @@ export const TaskForm = ({ task, open = true, onOpenChange }) => {
       return response.data;
     },
     onSuccess: (data) => {
+      queryCleint.invalidateQueries(['tasks'])
+      onOpenChange?.(false)
+      setFormValue({
+        title: "",
+        description: "",
+        status: "pending",
+        dueDate : ""
+      })
       console.log("Task Created successfuly:", data);
+      toast.success(`Task Created successfuly:`)
     },
     onError: (error) => {
       console.log("Error creating task:", error);
+    },
+  });
+
+  const updateTaskMutation = useMutation({
+    mutationFn: async (taskData) => {
+      const response = await api.put(`/update/${task._id}`, taskData);
+      return response.data;
+    },
+    onSuccess: (data) => {
+       queryCleint.invalidateQueries(['tasks'])
+      onOpenChange?.(false)
+      setFormValue({
+        title: "",
+        description: "",
+        status: "pending",
+        dueDate : ""
+      })
+      toast.success("Task updated successfully", data);
+    },
+    onError: (error) => {
+      toast.error("error updating task", error);
+      console.log("error updating task", error)
     },
   });
   const handleSubmit = (e) => {
@@ -104,8 +139,16 @@ export const TaskForm = ({ task, open = true, onOpenChange }) => {
         ? new Date(formValues.dueDate).toISOString()
         : null,
     };
-    createTaskMutation.mutate(taskData);
+
+    if (task) {
+      updateTaskMutation.mutate(taskData);
+    } else {
+      createTaskMutation.mutate(taskData);
+    }
   };
+
+  const dispalyErrors =
+    validationError || extractErrorMessages(createTaskMutation.error);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -174,7 +217,15 @@ export const TaskForm = ({ task, open = true, onOpenChange }) => {
             <Button type="button" variant="outline" onChange={handleCencel}>
               Cancel
             </Button>
-            <Button type="submit">Create Task</Button>
+           <Button type="submit" disabled={isLoading}> {
+            isLoading ? (
+              <span className="flex items-center gap-2">
+                <Loader size="sm" />
+                {task ? 'Updating...' : "Creating.."}
+              </span>
+            ) : (task ? 'Update Task....' : 'Create task' )}
+
+           </Button>
           </DialogFooter>
         </form>
       </DialogContent>

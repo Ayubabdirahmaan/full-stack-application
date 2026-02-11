@@ -9,9 +9,16 @@ export const TaskList = ({
   tasks = [],
   isLaoding = false,
   onEdit,
-  onDelete,
   onStatusChange,
 }) => {
+  const [seachTerm, setSearchTerm] = useState("");
+  const filteredTask = tasks.filter((task) => {
+    const mutchesSearch =
+      task.title.toLowerCase().includes(seachTerm.toLowerCase()) ||
+      (task.description &&
+        task.description.toLowerCase().includes(seachTerm.toLowerCase()));
+    return mutchesSearch;
+  });
   const getTaskStatus = () => {
     const AllTasksByStatus = {
       pending: tasks.filter((task) => task.status === "pending").length,
@@ -19,23 +26,22 @@ export const TaskList = ({
       completed: tasks.filter((task) => task.status === "completed").length,
     };
     const categorizedTasks = {
-      all: tasks,
-      pending : tasks.filter(task => task.status === "pending"),
-      inProgress : tasks.filter(task => task.status === "in progress"),
-      completed : tasks.filter(task => task.status === "completed")
-    }
+      all: filteredTask,
+      pending: filteredTask.filter((task) => task.status === "pending"),
+      inProgress: filteredTask.filter((task) => task.status === "in progress"),
+      completed: filteredTask.filter((task) => task.status === "completed"),
+    };
     const stats = {
       total: tasks.length,
-      pending : AllTasksByStatus.pending,
+      pending: AllTasksByStatus.pending,
       inProgress: AllTasksByStatus.inProgress,
-      completed: AllTasksByStatus.completed
-    }
-    const total = tasks.length
+      completed: AllTasksByStatus.completed,
+    };
+    const total = tasks.length;
     return { total, stats, categorizedTasks };
   };
-  const [seachTerm, setSearchTerm] = useState("");
 
-  const {stats, total, categorizedTasks} = getTaskStatus();
+  const { stats, total, categorizedTasks } = getTaskStatus();
 
   const TaskGrid = ({ tasks, emptyMessage }) => {
     if (tasks.length === 0) {
@@ -140,19 +146,24 @@ export const TaskList = ({
         </TabsContent>
         <TabsContent value="pending">
           Pending Tasks
-            <TaskGrid tasks={categorizedTasks.pending}
+          <TaskGrid
+            tasks={categorizedTasks.pending}
             emptyMessage={"No Pending Found"}
-             />
-          </TabsContent>
-        <TabsContent value="inProgress">in progress Tasks
-           <TaskGrid tasks={categorizedTasks.inProgress}
-            emptyMessage={"No inProgress Found"}
-             />
+          />
         </TabsContent>
-        <TabsContent value="completed">Completed Tasks
-           <TaskGrid tasks={categorizedTasks.completed}
+        <TabsContent value="inProgress">
+          in progress Tasks
+          <TaskGrid
+            tasks={categorizedTasks.inProgress}
+            emptyMessage={"No inProgress Found"}
+          />
+        </TabsContent>
+        <TabsContent value="completed">
+          Completed Tasks
+          <TaskGrid
+            tasks={categorizedTasks.completed}
             emptyMessage={"No Completed Found"}
-             />
+          />
         </TabsContent>
         <TabsContent value="password">Change your password here.</TabsContent>
       </Tabs>
