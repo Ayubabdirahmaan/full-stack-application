@@ -8,10 +8,13 @@ import { notFound } from "./middleware/noFound.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import authProtect from "./routes/auth.js";
 import authAdmin from "./routes/admin.js";
-import TaskRouter from './routes/userTask.js'
-import AllTasks from './routes/GetMyTasks.js'
-import updateTask from './routes/updateTasks.js'
-import DeleteTask from './routes/TaskDelete.js'
+import TaskRouter from "./routes/userTask.js";
+import AllTasks from "./routes/GetMyTasks.js";
+import updateTask from "./routes/updateTasks.js";
+import DeleteTask from "./routes/TaskDelete.js";
+
+import path from "path";
+import { fileURLToPath, pathToFileURL } from "url";
 
 dotenv.config(); //
 const app = express();
@@ -31,15 +34,29 @@ app.use(express.json());
 app.use("/api/user", UserRouter);
 app.use("/api/auth", authProtect);
 app.use("/api/admin", authAdmin);
-app.use("/api/tasks", TaskRouter)
-app.use('/api/allTask', AllTasks )
-app.use('/api/update', updateTask )
-app.use('/api/delete', DeleteTask )
+app.use("/api/tasks", TaskRouter);
+app.use("/api/allTask", AllTasks);
+app.use("/api/update", updateTask);
+app.use("/api/delete", DeleteTask);
+
+// Server frontend in Production
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.dirname(fileURLToPath)(import.meta.url);
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get(/.*/, (req, res) => {
+    res.send(path.join(__dirname, "..", "frontend", "dist", "index.html"));
+  });
+}
 
 app.use(notFound);
 app.use(errorHandler);
 mongoose
-  .connect(process.env.MONGO_URI_PRO)
+  .connect(
+    process.env.NODE_ENV == "development"
+      ? process.env.MONGO_URI_DEV
+      : process.env.MONGO_URI_PRO,
+  )
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.log("❌ Connection err:", err));
 

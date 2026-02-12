@@ -1,3 +1,2 @@
 - [✅] Github Initialization
-- [] Deployment
-- [] Deployment
+- [✅] Deployment
