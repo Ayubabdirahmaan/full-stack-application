@@ -57,7 +57,7 @@ if (process.env.NODE_ENV === "production") {
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
     // Static files
-    const frontendPath = path.join(__dirname, '../frontend/build');
+    const frontendPath = path.join(__dirname, '../frontend/dist');
     app.use(express.static(frontendPath));
 
     // Catch-all route
