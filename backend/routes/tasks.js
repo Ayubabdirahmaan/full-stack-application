@@ -6,13 +6,14 @@ import { taskValidationSchema } from "../Schema/taskSchema.js";
 const router = express.Router();
 import { getMyTasks } from "../controllers/todoTask.js";
 import { updateTask } from "../controllers/todoTask.js";
+import { deleteTask } from '../controllers/todoTask.js'
 
 /**
  * @swagger
  * /api/allTask:
  *   get:
  *     summary: Get all tasks for the logged-in user
- *     tags: [Task]
+ *     tags: [Tasks]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -25,7 +26,7 @@ router.get("/", protect, getMyTasks);
  * /api/tasks:
  *   post:
  *     summary: Create a new task
- *     tags: [Task]
+ *     tags: [Tasks]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -58,7 +59,7 @@ router.post("/", protect, validate(taskValidationSchema), createTask);
  * /api/update/{id}:
  *   put:
  *     summary: Update a task by ID
- *     tags: [Task]
+ *     tags: [Tasks]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -86,6 +87,28 @@ router.post("/", protect, validate(taskValidationSchema), createTask);
  *         description: Task updated
  */
 router.put("/:id", protect, validate(taskValidationSchema), updateTask);
+
+/**
+ * @swagger
+ * /api/delete/{id}:
+ *   delete:
+ *     summary: Delete a task by ID
+ *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Task ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Task deleted
+ */
+router.delete('/:id', protect,  deleteTask  )
+
 
 
 

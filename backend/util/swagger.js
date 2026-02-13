@@ -29,7 +29,7 @@ const options = {
   },
 
   // 🔥 muhiim — absolute path
-apis: [path.join(__dirname, "../routes/tasks.js")],
+apis: [path.join(__dirname, "../routes/*.js")],
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
