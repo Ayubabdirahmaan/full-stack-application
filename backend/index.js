@@ -16,9 +16,13 @@ import helmet from "helmet";
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './util/swagger.js'
 
+import { limiter } from "./middleware/rateLimter.js";
+
 import path from "path";
 import { fileURLToPath } from "url";
-import { limiter } from "./middleware/rateLimter.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config(); //
 const app = express();
@@ -49,13 +53,16 @@ app.use("/api/delete", DeleteTask);
 
 // Server frontend in Production
 if (process.env.NODE_ENV === "production") {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  app.get(/.*/, (req, res) => {
-    res.send(path.join(__dirname, "..", "frontend", "dist", "index.html"));
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.join(__dirname, "..", "frontend", "dist", "index.html")
+    );
   });
 }
+
+
 
 
 
