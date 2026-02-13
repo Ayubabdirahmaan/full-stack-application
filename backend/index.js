@@ -54,15 +54,19 @@ app.use("/api/delete", DeleteTask);
 // Server frontend in Production
 
 if (process.env.NODE_ENV === "production") {
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    
+    const frontendPath = path.join(__dirname, "../frontend/build");
 
     // Static files
-    const frontendPath = path.join(__dirname, '../frontend/dist');
     app.use(express.static(frontendPath));
 
-    // Catch-all route
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(frontendPath, 'index.html'));
+    // Catch-all route: Isticmaal function express.Router() si loo ilaaliyo regex sax
+    app.use((req, res, next) => {
+        res.sendFile(path.join(frontendPath, "index.html"), (err) => {
+            if (err) {
+                next(err);
+            }
+        });
     });
 }
 
