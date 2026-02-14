@@ -13,9 +13,9 @@ import AllTasks from "./routes/GetMyTasks.js";
 import updateTask from "./routes/updateTasks.js";
 import DeleteTask from "./routes/TaskDelete.js";
 import helmet from "helmet";
-import swaggerUi from 'swagger-ui-express';
-import { swaggerSpec } from './util/swagger.js'
-import path from 'path'
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./util/swagger.js";
+import path from "path";
 import { fileURLToPath } from "url";
 
 import { limiter } from "./middleware/rateLimter.js";
@@ -47,24 +47,20 @@ app.use("/api/update", updateTask);
 app.use("/api/delete", DeleteTask);
 
 // Server frontend in Production
-    if(process.env.NODE_ENV === "production") {
-      const __dirname = path.dirname(fileURLToPath(import.meta.url))
-      app.use(express.static(path.join(__dirname, '../frontend/dist')))
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-      // server the frontend app
-      app.get(/.*/, (req, res) => {
-        res.send(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'))
-      })
-    }
-
-
+  // server the frontend app
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"));
+  });
+}
 
 app.use(notFound);
 app.use(errorHandler);
 mongoose
-  .connect(
-     process.env.MONGO_URI_PRO,
-  )
+  .connect(process.env.MONGO_URI_PRO)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.log("❌ Connection err:", err));
 
