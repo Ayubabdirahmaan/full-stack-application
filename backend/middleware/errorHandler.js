@@ -1,3 +1,4 @@
+
 export const errorHandler = (err, req, res, next) => {
   console.log("error", err);
   const status = err.statusCode || 500;
@@ -7,3 +8,4 @@ export const errorHandler = (err, req, res, next) => {
     status
   });
 };
+
