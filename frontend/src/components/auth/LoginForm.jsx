@@ -47,7 +47,6 @@ export const LoginForm = () => {
       if (data.token) {
         const user = data.user;
         const token = data.token;
-
         setAuth(user, token)
         navigate('/dashboard')
       }
@@ -70,7 +69,6 @@ export const LoginForm = () => {
       password: formValues.password,
     });
   };
-
   return (
     <Card className="w-full border-border">
       <CardHeader className="space-y-1 pb-4">
