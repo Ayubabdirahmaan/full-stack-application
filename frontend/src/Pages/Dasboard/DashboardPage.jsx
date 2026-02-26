@@ -60,7 +60,6 @@ export const DashboardPage = () => {
             tasks={taskQuery.data || []}
             isLoading={taskQuery.isLoading}
             onEdit={handleEditeTask}
-  
             onStatusChange={handleStatusChange}
           />
         </div>

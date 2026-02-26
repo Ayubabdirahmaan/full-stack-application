@@ -31,7 +31,7 @@ const router = express.Router()
  *       201:
  *         description: User registered
  */
-router.post('/', validate(userSchema), register)
+router.post('/register', validate(userSchema), register)
 /**
  * @swagger
  * /api/user/login:
@@ -56,7 +56,7 @@ router.post('/', validate(userSchema), register)
  *       200:
  *         description: Login successful, returns JWT token
  */
-router.post('/login',  login,) 
+router.post('/login',  login) 
 
 
 export default router;
